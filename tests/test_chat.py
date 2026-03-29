@@ -1,6 +1,8 @@
 """Test chat endpoint — streaming, message persistence, edge cases."""
 
 import json
+import pytest
+from tests.conftest import requires_embeddings
 
 
 def parse_sse(response_text: str) -> list[dict]:
@@ -15,6 +17,7 @@ def parse_sse(response_text: str) -> list[dict]:
     return events
 
 
+@requires_embeddings
 def test_chat_creates_conversation(client, auth_headers):
     """First message should create a new conversation."""
     res = client.post(
@@ -30,6 +33,7 @@ def test_chat_creates_conversation(client, auth_headers):
     assert conv_ids[0]  # non-empty
 
 
+@requires_embeddings
 def test_chat_returns_sse_pipeline(client, auth_headers):
     """Response should include classify, retrieve, generate nodes."""
     res = client.post(
@@ -45,6 +49,7 @@ def test_chat_returns_sse_pipeline(client, auth_headers):
     assert "generate" in nodes
 
 
+@requires_embeddings
 def test_chat_returns_sources(client, auth_headers):
     """Course-related queries should return source chunks."""
     res = client.post(
@@ -63,6 +68,7 @@ def test_chat_returns_sources(client, auth_headers):
     assert "similarity" in sources[0]
 
 
+@requires_embeddings
 def test_chat_returns_tokens(client, auth_headers):
     """Response should stream tokens."""
     res = client.post(
@@ -78,6 +84,7 @@ def test_chat_returns_tokens(client, auth_headers):
     assert len(full_response) > 10
 
 
+@requires_embeddings
 def test_chat_done_event(client, auth_headers):
     """Stream should end with a done event."""
     res = client.post(
@@ -90,6 +97,7 @@ def test_chat_done_event(client, auth_headers):
     assert len(done_events) == 1
 
 
+@requires_embeddings
 def test_chat_persists_messages(client, auth_headers):
     """Messages should be saved to the conversation."""
     res = client.post(
@@ -108,6 +116,7 @@ def test_chat_persists_messages(client, auth_headers):
     assert len(msgs[1]["content"]) > 0
 
 
+@requires_embeddings
 def test_chat_continues_conversation(client, auth_headers):
     """Sending a second message to same conversation should work."""
     # First message
@@ -162,6 +171,7 @@ def test_chat_rejects_invalid_conversation(client, auth_headers):
     assert res.status_code == 404
 
 
+@requires_embeddings
 def test_chat_cross_user_isolation(client):
     """User A cannot send messages to User B's conversation."""
     # Create user A

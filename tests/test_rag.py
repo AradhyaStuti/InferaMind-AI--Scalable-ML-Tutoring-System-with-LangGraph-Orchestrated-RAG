@@ -1,9 +1,13 @@
 """Test RAG pipeline — embeddings, graph, and retrieval quality."""
 
+import pytest
+from tests.conftest import requires_embeddings
+
 from backend.rag.embeddings import embedding_service
 from backend.rag.graph import run_graph, classify_node, retrieve_node
 
 
+@requires_embeddings
 class TestEmbeddingService:
     """Test the FAISS embedding service."""
 
@@ -47,6 +51,7 @@ class TestEmbeddingService:
         assert similarities == sorted(similarities, reverse=True)
 
 
+@requires_embeddings
 class TestGraphPipeline:
     """Test the LangGraph classify + retrieve pipeline (embeddings-based classifier)."""
 

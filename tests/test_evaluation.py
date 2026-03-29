@@ -1,5 +1,8 @@
 """Tests for RAGAS evaluation metrics."""
 
+import pytest
+from tests.conftest import requires_embeddings
+
 from backend.rag.evaluation import (
     context_precision,
     context_recall,
@@ -11,6 +14,7 @@ from backend.rag.embeddings import embedding_service
 from backend.rag.graph import run_graph
 
 
+@requires_embeddings
 class TestContextPrecision:
     def test_relevant_chunks_score_high(self):
         sources = embedding_service.search("supervised learning")
@@ -22,6 +26,7 @@ class TestContextPrecision:
         assert context_precision("anything", []) == 0.0
 
 
+@requires_embeddings
 class TestContextRecall:
     def test_recall_with_ground_truth(self):
         sources = embedding_service.search("gradient descent")
@@ -33,6 +38,7 @@ class TestContextRecall:
         assert context_recall([], "some ground truth") == 0.0
 
 
+@requires_embeddings
 class TestFaithfulness:
     def test_grounded_answer_scores_high(self):
         sources = embedding_service.search("linear regression")
@@ -45,6 +51,7 @@ class TestFaithfulness:
         assert faithfulness("", sources) == 0.0
 
 
+@requires_embeddings
 class TestAnswerRelevancy:
     def test_relevant_answer_scores_high(self):
         score = answer_relevancy(
@@ -65,6 +72,7 @@ class TestAnswerRelevancy:
         assert answer_relevancy("question", "") == 0.0
 
 
+@requires_embeddings
 class TestEvaluateAggregate:
     def test_returns_all_metrics(self):
         result = run_graph("What is supervised learning?")
