@@ -71,7 +71,7 @@
 | Auth       | JWT (python-jose), bcrypt, HTTPBearer |
 | Database   | SQLite (conversations + user auth)  |
 | Streaming  | Server-Sent Events (SSE)            |
-| Testing    | pytest (backend), Vitest (frontend), 40+ tests |
+| Testing    | pytest (backend), Vitest (frontend), 38 tests |
 | DevOps     | Docker, GitHub Actions CI/CD (4-job pipeline: lint, test, build, Docker) |
 
 ## Features
@@ -86,7 +86,7 @@
 - **Source Citations** — every response shows exact video timestamps with similarity scores
 - **Modern UI** — dark-themed React chat interface with sidebar, typing indicators, and suggested questions
 - **Fully Local** — no external APIs, everything runs on your machine via Ollama
-- **Full Test Suite** — 40+ tests across backend (pytest) and frontend (Vitest), wired into CI
+- **Full Test Suite** — 38 tests across backend (pytest) and frontend (Vitest), wired into CI
 - **Docker Ready** — multi-stage Dockerfile + docker-compose with GPU support
 
 ## Project Structure
@@ -114,32 +114,48 @@ InferaMind-AI/
 ├── frontend/
 │   ├── src/
 │   │   ├── App.jsx          # Root component
+│   │   ├── main.jsx         # Entry point
 │   │   ├── styles.css       # Global styles
 │   │   ├── api/client.js    # API client with streaming
-│   │   ├── hooks/useChat.js # Chat state management hook
-│   │   └── components/
-│   │       ├── Sidebar.jsx       # Conversation list
-│   │       ├── ChatWindow.jsx    # Main chat area
-│   │       ├── MessageBubble.jsx # Message rendering + markdown
-│   │       ├── SourceCard.jsx    # RAG source citations
-│   │       ├── InputArea.jsx     # Message input
-│   │       └── WelcomeScreen.jsx # Landing page with suggestions
+│   │   ├── hooks/
+│   │   │   ├── useChat.js   # Chat state management hook
+│   │   │   └── useAuth.js   # Auth state management hook
+│   │   ├── components/
+│   │   │   ├── AuthScreen.jsx    # Login/register screen
+│   │   │   ├── ChatWindow.jsx    # Main chat area
+│   │   │   ├── ErrorBoundary.jsx # Error boundary wrapper
+│   │   │   ├── InputArea.jsx     # Message input
+│   │   │   ├── LandingScreen.jsx # Post-login landing page
+│   │   │   ├── MessageBubble.jsx # Message rendering + markdown
+│   │   │   ├── PipelineStatus.jsx # RAG pipeline progress
+│   │   │   ├── RobotAvatar.jsx   # Bot avatar component
+│   │   │   ├── RobotMascot.jsx   # Mascot animation
+│   │   │   ├── Sidebar.jsx       # Conversation list
+│   │   │   ├── SourceCard.jsx    # RAG source citations
+│   │   │   └── WelcomeScreen.jsx # In-chat welcome with suggestions
+│   │   └── test/
+│   │       ├── components.test.jsx # Frontend component tests
+│   │       └── setup.js           # Vitest setup
 │   ├── index.html
-│   └── vite.config.js
+│   ├── vite.config.js
+│   ├── eslint.config.js
+│   └── package.json
 ├── data/
 │   ├── jsons.json           # Video transcript chunks
 │   ├── embeddings.joblib    # Pre-computed embeddings
 │   ├── preprocess_json.py   # Script to generate embeddings
 │   └── mp3_to_json.py       # Script to transcribe audio
 ├── tests/
-│   ├── test_auth.py         # Auth endpoint tests
-│   ├── test_chat.py         # Chat endpoint tests
-│   ├── test_conversations.py
-│   ├── test_edge_cases.py
-│   ├── test_evaluation.py   # RAGAS evaluation metric tests
-│   ├── test_health.py
-│   └── test_rag.py          # RAG pipeline + classifier tests
-├── .github/workflows/       # CI/CD pipelines
+│   ├── conftest.py          # Shared fixtures
+│   ├── test_auth.py         # Auth endpoint tests (5)
+│   ├── test_chat.py         # Chat + streaming tests (5)
+│   ├── test_conversations.py # CRUD tests (5)
+│   ├── test_edge_cases.py   # Security + edge cases (4)
+│   ├── test_evaluation.py   # RAGAS metric tests (5)
+│   ├── test_health.py       # Health endpoint tests (2)
+│   └── test_rag.py          # RAG pipeline + classifier tests (5)
+├── .github/workflows/       # CI/CD pipelines (ci.yml + cd.yml)
+├── banner.svg               # Project banner
 ├── Dockerfile               # Multi-stage build
 ├── docker-compose.yml       # Full stack orchestration
 └── requirements.txt

@@ -135,6 +135,10 @@
     <!-- Ollama badge -->
     <rect x="400" y="0" width="80" height="26" rx="13" fill="#00d2ff" fill-opacity="0.15" stroke="#00d2ff" stroke-width="1" stroke-opacity="0.4"/>
     <text x="440" y="17" font-family="'Segoe UI', Arial, sans-serif" font-weight="600" font-size="12" fill="#00d2ff" text-anchor="middle">Ollama</text>
+
+    <!-- 38 Tests badge -->
+    <rect x="492" y="0" width="88" height="26" rx="13" fill="#22c55e" fill-opacity="0.15" stroke="#22c55e" stroke-width="1" stroke-opacity="0.4"/>
+    <text x="536" y="17" font-family="'Segoe UI', Arial, sans-serif" font-weight="600" font-size="12" fill="#22c55e" text-anchor="middle">38 Tests</text>
   </g>
 
   <!-- Description -->
@@ -142,7 +146,7 @@
     LangGraph-Orchestrated RAG + Embeddings Classifier + RAGAS Eval
   </text>
   <text x="290" y="250" font-family="'Segoe UI', Arial, sans-serif" font-weight="300" font-size="14" fill="#8080a0">
-    React + FastAPI + Local LLMs + Real-time Streaming
+    React + FastAPI + Local LLMs + SSE Streaming + CI/CD
   </text>
 
   <!-- Bottom accent line -->

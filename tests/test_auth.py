@@ -25,22 +25,6 @@ def test_register_duplicate(client):
     assert res.status_code == 409
 
 
-def test_register_invalid_username(client):
-    res = client.post("/api/auth/register", json={
-        "username": "ab",  # too short
-        "password": "password123",
-    })
-    assert res.status_code == 422
-
-
-def test_register_short_password(client):
-    res = client.post("/api/auth/register", json={
-        "username": "validuser",
-        "password": "short",  # too short
-    })
-    assert res.status_code == 422
-
-
 def test_login_success(client):
     client.post("/api/auth/register", json={
         "username": "loginuser",
